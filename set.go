@@ -15,9 +15,8 @@ func Create() (s Set) {
 // Add adds elem to the set s. If the element exists in the set, no addition is
 // performed and false is returned. Otherwise, a new entry is added and it
 // retuns true.
-func (s *Set) Add(elem interface{}) (bool) {
-	// false is the default map value for bool and the value I use if an
-	// element is not in the set
+func (s *Set) Add(elem interface{}) bool {
+	// bool defaults to false, so , if an element does not exist, it will map to false.
 	if !s.set[elem] {
 		s.set[elem] = true
 
@@ -27,17 +26,22 @@ func (s *Set) Add(elem interface{}) (bool) {
 	return false
 }
 
+// Exists returns true if the element provided already exists in the set, otherwise false.
+func (s *Set) Exists(elem interface{}) bool {
+	return s.set[elem]
+}
+
 // Length returns the number of elements in the set s.
-func (s *Set) Length() (int) {
+func (s *Set) Length() int {
 	return len(s.set)
 }
 
 // Empty returns true if the set is empty, if it has no elements, otherwise
 // false.
-func (s *Set) Empty() bool{
+func (s *Set) Empty() bool {
 	if s.Length() > 0 {
-                return false
-        }
+		return false
+	}
 
-        return true
+	return true
 }
