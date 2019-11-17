@@ -74,12 +74,3 @@ func TestEmpty(t *testing.T) {
 		t.Errorf("The set %v is empty", s)
 	}
 }
-
-func TestSetInSet(t *testing.T) {
-	s1 := Create()
-	s2 := Create()
-
-	if s1.Add(s2) == false {
-		t.Errorf("%v already exists in the set %v", s2, s1)
-	}
-}
