@@ -5,15 +5,23 @@ import (
 )
 
 func TestCreateAndAdd(t *testing.T) {
-	s := Create()
+	s := CreateSet()
 
 	if s.Add(1) == false {
 		t.Errorf("1 already exists in the set %v", s)
 	}
 }
 
+func TestCreateWithElement(t *testing.T) {
+	s := Create(1)
+
+	if s.Exists(1) == false {
+		t.Errorf("1 is not in the set %v", s)
+	}
+}
+
 func TestAddMultipleElements(t *testing.T) {
-	s := Create()
+	s := CreateSet()
 
 	if s.Add(1) == false {
 		t.Errorf("1 already exists in the set %v", s)
@@ -25,7 +33,7 @@ func TestAddMultipleElements(t *testing.T) {
 }
 
 func TestAddDifferentKindElements(t *testing.T) {
-	s := Create()
+	s := CreateSet()
 
 	if s.Add(1) == false {
 		t.Errorf("1 already exists in the set %v", s)
@@ -36,8 +44,20 @@ func TestAddDifferentKindElements(t *testing.T) {
 	}
 }
 
+func TestAddDifferentKindElementsThanInitial(t *testing.T) {
+	s := Create(1)
+
+	if s.Add(2) == false {
+		t.Errorf("2 already exists in the set %v", s)
+	}
+
+	if s.Add("2") == true {
+		t.Errorf("\"2\" was succesfully added in the set %v", s)
+	}
+}
+
 func TestAddDuplicate(t *testing.T) {
-	s := Create()
+	s := CreateSet()
 
 	if s.Add(1) == false {
 		t.Errorf("1 already exists in the set %v", s)
@@ -48,8 +68,32 @@ func TestAddDuplicate(t *testing.T) {
 	}
 }
 
+func TestAddDifferentKindThanInitialCustomType(t *testing.T) {
+	points := []struct {
+		X, Y int
+	} {
+		{1, 2},
+		{2, 3},
+		{1, 2},
+	}
+
+	s := Create(points[0])
+
+	for point := range points {
+		s.Add(point)
+	}
+
+	if s.Empty() {
+		t.Errorf("The set is empty.")
+	}
+
+	if s.Add(1) {
+		t.Errorf("1 was added succesfully in the set %v", s)
+	}
+}
+
 func TestExists(t *testing.T) {
-	s := Create()
+	s := CreateSet()
 	s.Add(1)
 
 	if s.Exists(1) == false {
@@ -62,7 +106,7 @@ func TestExists(t *testing.T) {
 }
 
 func TestEmpty(t *testing.T) {
-	s := Create()
+	s := CreateSet()
 
 	if s.Empty() == false {
 		t.Errorf("The set %v is not empty", s)

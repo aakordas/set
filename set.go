@@ -1,24 +1,63 @@
 package set
 
+/* This implementation, with anonymous struct, is copied from online. I could
+/* link the latest source I found it from, but it's in many places. Same goes
+/* for the boolean version.
+ */
+
+import (
+	"reflect"
+)
+
 // Set is a structure that allows no duplicate entries.
 type Set struct {
-	set map[interface{}]bool
+	set          map[interface{}]struct{}
+	elementsType reflect.Type
 }
 
-// Create allocates memory for a new set.
-func Create() (s Set) {
-	s.set = make(map[interface{}]bool)
+var exists = struct{}{}
+
+// CreateSet allocates memory for a new Set. A Set created this way can have
+// elements of varying types.
+func CreateSet() (s Set) {
+	s.set = make(map[interface{}]struct{})
+	s.elementsType = nil
 
 	return s
 }
 
-// Add adds elem to the set s. If the element exists in the set, no addition is
-// performed and false is returned. Otherwise, a new entry is added and it
-// retuns true.
+// Create creates a set and inserts elem in it. Moreover, it sets the type of
+// the set to be that of the element. That means that Sets created this way will
+// only accept elements of the same type as the initial element.
+func Create(elem interface{}) (s Set) {
+	s.set = make(map[interface{}]struct{})
+	s.elementsType = reflect.ValueOf(elem).Type()
+
+	s.Add(elem)
+
+	return s
+}
+
+// properType checks if elem is the same type as Set.elementsType.
+func (s *Set) properType(elem interface{}) bool {
+	if s.elementsType == nil || reflect.ValueOf(elem).Type() == s.elementsType {
+		return true
+	}
+
+	return false
+}
+
+// Add adds elem to the set s. If the element exists in the set or if the
+// element is not of the correct type,, no addition is performed and false is
+// returned. Otherwise, a new entry is added and it retuns true.
 func (s *Set) Add(elem interface{}) bool {
+	if !s.properType(elem) {
+		return false
+	}
+
 	// bool defaults to false, so , if an element does not exist, it will map to false.
-	if !s.set[elem] {
-		s.set[elem] = true
+	if _, ok := s.set[elem]; !ok {
+		s.set[elem] = exists
 
 		return true
 	}
@@ -28,7 +67,12 @@ func (s *Set) Add(elem interface{}) bool {
 
 // Exists returns true if the element provided already exists in the set, otherwise false.
 func (s *Set) Exists(elem interface{}) bool {
-	return s.set[elem]
+	if !s.properType(elem) {
+		return false
+	}
+
+	_, ok := s.set[elem]
+	return ok
 }
 
 // Length returns the number of elements in the set s.
