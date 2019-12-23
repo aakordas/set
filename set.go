@@ -3,7 +3,7 @@ package set
 /* This implementation, with anonymous struct, is copied from online. I could
 /* link the latest source I found it from, but it's in many places. Same goes
 /* for the boolean version.
- */
+*/
 
 import (
 	"reflect"
@@ -11,7 +11,7 @@ import (
 
 // Set is a structure that allows no duplicate entries.
 type Set struct {
-	set          map[interface{}]struct{}
+	Set          map[interface{}]struct{}
 	elementsType reflect.Type
 }
 
@@ -20,7 +20,7 @@ var exists = struct{}{}
 // CreateSet allocates memory for a new Set. A Set created this way can have
 // elements of varying types.
 func CreateSet() (s Set) {
-	s.set = make(map[interface{}]struct{})
+	s.Set = make(map[interface{}]struct{})
 	s.elementsType = nil
 
 	return s
@@ -30,7 +30,7 @@ func CreateSet() (s Set) {
 // the set to be that of the element. That means that Sets created this way will
 // only accept elements of the same type as the initial element.
 func Create(elem interface{}) (s Set) {
-	s.set = make(map[interface{}]struct{})
+	s.Set = make(map[interface{}]struct{})
 	s.elementsType = reflect.ValueOf(elem).Type()
 
 	s.Add(elem)
@@ -56,8 +56,8 @@ func (s *Set) Add(elem interface{}) bool {
 	}
 
 	// bool defaults to false, so , if an element does not exist, it will map to false.
-	if _, ok := s.set[elem]; !ok {
-		s.set[elem] = exists
+	if _, ok := s.Set[elem]; !ok {
+		s.Set[elem] = exists
 
 		return true
 	}
@@ -71,13 +71,13 @@ func (s *Set) Exists(elem interface{}) bool {
 		return false
 	}
 
-	_, ok := s.set[elem]
+	_, ok := s.Set[elem]
 	return ok
 }
 
 // Length returns the number of elements in the set s.
 func (s *Set) Length() int {
-	return len(s.set)
+	return len(s.Set)
 }
 
 // Empty returns true if the set is empty, if it has no elements, otherwise
