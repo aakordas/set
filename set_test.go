@@ -105,6 +105,21 @@ func TestExists(t *testing.T) {
 	}
 }
 
+func TestLength(t *testing.T) {
+	s := CreateSet()
+
+	if s.Length() != 0 {
+		t.Errorf("The set %v has elements in it?", s)
+	}
+
+	s.Add(1)
+	s.Add(2)
+
+	if s.Length() != 2 {
+		t.Errorf("The set %v has more than two elements.", s)
+	}
+}
+
 func TestEmpty(t *testing.T) {
 	s := CreateSet()
 
