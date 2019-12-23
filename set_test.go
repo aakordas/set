@@ -7,7 +7,7 @@ import (
 func TestCreateAndAdd(t *testing.T) {
 	s := CreateSet()
 
-	if s.Add(1) == false {
+	if !s.Add(1) {
 		t.Errorf("1 already exists in the set %v", s)
 	}
 }
@@ -15,7 +15,7 @@ func TestCreateAndAdd(t *testing.T) {
 func TestCreateWithElement(t *testing.T) {
 	s := Create(1)
 
-	if s.Exists(1) == false {
+	if !s.Exists(1) {
 		t.Errorf("1 is not in the set %v", s)
 	}
 }
@@ -23,11 +23,11 @@ func TestCreateWithElement(t *testing.T) {
 func TestAddMultipleElements(t *testing.T) {
 	s := CreateSet()
 
-	if s.Add(1) == false {
+	if !s.Add(1) {
 		t.Errorf("1 already exists in the set %v", s)
 	}
 
-	if s.Add(2) == false {
+	if !s.Add(2) {
 		t.Errorf("2 already exists in the set %v", s)
 	}
 }
@@ -35,11 +35,11 @@ func TestAddMultipleElements(t *testing.T) {
 func TestAddDifferentKindElements(t *testing.T) {
 	s := CreateSet()
 
-	if s.Add(1) == false {
+	if !s.Add(1) {
 		t.Errorf("1 already exists in the set %v", s)
 	}
 
-	if s.Add("2") == false {
+	if !s.Add("2") {
 		t.Errorf("\"2\" already exists in the set %v", s)
 	}
 }
@@ -47,11 +47,11 @@ func TestAddDifferentKindElements(t *testing.T) {
 func TestAddDifferentKindElementsThanInitial(t *testing.T) {
 	s := Create(1)
 
-	if s.Add(2) == false {
+	if !s.Add(2) {
 		t.Errorf("2 already exists in the set %v", s)
 	}
 
-	if s.Add("2") == true {
+	if s.Add("2") {
 		t.Errorf("\"2\" was succesfully added in the set %v", s)
 	}
 }
@@ -59,11 +59,11 @@ func TestAddDifferentKindElementsThanInitial(t *testing.T) {
 func TestAddDuplicate(t *testing.T) {
 	s := CreateSet()
 
-	if s.Add(1) == false {
+	if !s.Add(1) {
 		t.Errorf("1 already exists in the set %v", s)
 	}
 
-	if s.Add(1) == true {
+	if s.Add(1) {
 		t.Errorf("1 does not exist in the set %v", s)
 	}
 }
@@ -71,7 +71,7 @@ func TestAddDuplicate(t *testing.T) {
 func TestAddDifferentKindThanInitialCustomType(t *testing.T) {
 	points := []struct {
 		X, Y int
-	} {
+	}{
 		{1, 2},
 		{2, 3},
 		{1, 2},
@@ -96,11 +96,11 @@ func TestExists(t *testing.T) {
 	s := CreateSet()
 	s.Add(1)
 
-	if s.Exists(1) == false {
+	if !s.Exists(1) {
 		t.Errorf("1 is not in the set %v", s)
 	}
 
-	if s.Exists(2) == true {
+	if s.Exists(2) {
 		t.Errorf("2 is in the set %v", s)
 	}
 }
@@ -108,13 +108,13 @@ func TestExists(t *testing.T) {
 func TestEmpty(t *testing.T) {
 	s := CreateSet()
 
-	if s.Empty() == false {
+	if !s.Empty() {
 		t.Errorf("The set %v is not empty", s)
 	}
 
 	s.Add(1)
 
-	if s.Empty() == true {
+	if s.Empty() {
 		t.Errorf("The set %v is empty", s)
 	}
 }
