@@ -26,6 +26,20 @@ func CreateSet() (s Set) {
 	return s
 }
 
+// SetType sets the type of the elements the set accepts. The type of the set
+// can only be set once. Hence, if one tries to set it again, the function will
+// return false and the type will not change. If the set already has elements of
+// other type(s) in it when this function is called, nothing will happen, but
+// future elements will have to be of the type specified here.
+func (s *Set) SetType(elem interface{}) bool {
+	if s.elementsType == nil {
+		s.elementsType = reflect.ValueOf(elem).Type()
+		return true
+	}
+
+	return false
+}
+
 // Create creates a set and inserts elem in it. Moreover, it sets the type of
 // the set to be that of the element. That means that Sets created this way will
 // only accept elements of the same type as the initial element.

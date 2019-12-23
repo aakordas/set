@@ -105,6 +105,29 @@ func TestExists(t *testing.T) {
 	}
 }
 
+func TestSetType(t *testing.T) {
+	s := CreateSet()
+
+	s.Add(1)
+	s.Add("2")
+
+	if !s.SetType(1) {
+		t.Errorf("Could not change the type of Set %v", s)
+	}
+
+	if s.Add("1") {
+		t.Errorf("\"1\" was added in the set %v", s)
+	}
+
+	if !s.Add(2) {
+		t.Errorf("2 was not added in the set %v", s)
+	}
+
+	if s.SetType("2") {
+		t.Errorf("Changed the type of the set %v succesfully.", s)
+	}
+}
+
 func TestLength(t *testing.T) {
 	s := CreateSet()
 
