@@ -1,13 +1,21 @@
-package set
-
 /* This implementation, with anonymous struct, is copied from online. I could
-/* link the latest source I found it from, but it's in many places. Same goes
-/* for the boolean version.
-*/
+link the latest source I found it from, but it's in many places. Same goes for
+the boolean version.  */
+package set
 
 import (
 	"reflect"
+        "fmt"
 )
+
+type TypeError struct {
+        newType reflect.Type // The type that caused the error
+        err string
+}
+
+func (e *TypeError) Error() string {
+        return fmt.Sprintf("%s is not a valid type for the set.", e.newType)
+}
 
 // Set is a structure that allows no duplicate entries.
 type Set struct {
@@ -31,13 +39,15 @@ func CreateSet() (s Set) {
 // return false and the type will not change. If the set already has elements of
 // other type(s) in it when this function is called, nothing will happen, but
 // future elements will have to be of the type specified here.
-func (s *Set) SetType(elem interface{}) bool {
+func (s *Set) SetType(elem interface{}) error {
+        newType := reflect.ValueOf(elem).Type()
+
 	if s.elementsType == nil {
-		s.elementsType = reflect.ValueOf(elem).Type()
-		return true
+		s.elementsType = newType
+		return nil
 	}
 
-	return false
+	return &TypeError{newType, "Invalid type"}
 }
 
 // Create creates a set and inserts elem in it. Moreover, it sets the type of

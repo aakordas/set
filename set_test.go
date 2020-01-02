@@ -111,7 +111,8 @@ func TestSetType(t *testing.T) {
 	s.Add(1)
 	s.Add("2")
 
-	if !s.SetType(1) {
+        var err error
+	if err = s.SetType(1); err != nil {
 		t.Errorf("Could not change the type of Set %v", s)
 	}
 
@@ -123,7 +124,7 @@ func TestSetType(t *testing.T) {
 		t.Errorf("2 was not added in the set %v", s)
 	}
 
-	if s.SetType("2") {
+	if err = s.SetType("2"); err == nil {
 		t.Errorf("Changed the type of the set %v succesfully.", s)
 	}
 }
