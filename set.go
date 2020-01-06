@@ -1,20 +1,39 @@
-/* This implementation, with anonymous struct, is copied from online. I could
-link the latest source I found it from, but it's in many places. Same goes for
-the boolean version.  */
+/*
+Package set provides a simple set implementation. Each element can be added
+only once in this set. Optionally, the user can set a type for the set, so only
+elements of this type are accepted.
+
+A custom error type TypeError is defined, which can hold information about
+the type of the set and a new type that tried to get enforced to it.
+
+A set cannot have other sets (or maps) as elements, as they are not hashable
+and the runtime panics.
+
+In order to achieve the type enforcement, the reflect package is used, with
+whatever performance penalties this might have.
+
+This set implementation is not thread-safe.
+*/
 package set
 
 import (
+	"fmt"
 	"reflect"
-        "fmt"
 )
 
+// TypeError indicates an incongruity between the type the set has and another
+// type the user tries to set. It holds information about both the new and the
+// old type, as well as an error message.
 type TypeError struct {
-        newType reflect.Type // The type that caused the error
-        err string
+	CurrentType reflect.Type // The type the set already has
+	NewType     reflect.Type // The type that caused the error
+	Err         string
 }
 
 func (e *TypeError) Error() string {
-        return fmt.Sprintf("%s is not a valid type for the set.", e.newType)
+	e.Err = fmt.Sprintf("%s is not a valid type for the set with type %s.", e.NewType, e.CurrentType)
+
+	return e.Err
 }
 
 // Set is a structure that allows no duplicate entries.
@@ -40,14 +59,14 @@ func CreateSet() (s Set) {
 // other type(s) in it when this function is called, nothing will happen, but
 // future elements will have to be of the type specified here.
 func (s *Set) SetType(elem interface{}) error {
-        newType := reflect.ValueOf(elem).Type()
+	newType := reflect.ValueOf(elem).Type()
 
 	if s.elementsType == nil {
 		s.elementsType = newType
 		return nil
 	}
 
-	return &TypeError{newType, "Invalid type"}
+	return &TypeError{s.elementsType, newType, "Trying to re-set the set's type."}
 }
 
 // Create creates a set and inserts elem in it. Moreover, it sets the type of

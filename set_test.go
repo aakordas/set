@@ -103,6 +103,12 @@ func TestExists(t *testing.T) {
 	if s.Exists(2) {
 		t.Errorf("2 is in the set %v", s)
 	}
+
+	s.SetType(1)
+
+	if s.Exists("3") {
+		t.Errorf("\"3\" is in the set %v", s)
+	}
 }
 
 func TestSetType(t *testing.T) {
@@ -111,7 +117,7 @@ func TestSetType(t *testing.T) {
 	s.Add(1)
 	s.Add("2")
 
-        var err error
+	var err error
 	if err = s.SetType(1); err != nil {
 		t.Errorf("Could not change the type of Set %v", s)
 	}
