@@ -160,3 +160,25 @@ func TestEmpty(t *testing.T) {
 		t.Errorf("The set %v is empty", s)
 	}
 }
+
+func TestEqual(t *testing.T) {
+	s1 := CreateSet(1)
+	s2 := CreateSet(1)
+
+	if !s1.Equal(s2) {
+		t.Errorf("The set %v is not equal to the set %v.", s1, s2)
+	}
+
+	s2.Add(2)
+
+	if s1.Equal(s2) {
+		t.Errorf("The set %v is equal to the set %v.", s1, s2)
+	}
+
+	s1.Add(2)
+	s1.Add(3)
+
+	if s1.Equal(s2) {
+		t.Errorf("The set %v is equal to the set %v.", s1, s2)
+	}
+}
