@@ -5,7 +5,7 @@ import (
 )
 
 func TestCreateAndAdd(t *testing.T) {
-	s := CreateSet()
+	s := NewSet()
 
 	if !s.Add(1) {
 		t.Errorf("1 already exists in the set %v", s)
@@ -13,7 +13,7 @@ func TestCreateAndAdd(t *testing.T) {
 }
 
 func TestCreateWithElement(t *testing.T) {
-	s := Create(1)
+	s := CreateSet(1)
 
 	if !s.Exists(1) {
 		t.Errorf("1 is not in the set %v", s)
@@ -21,7 +21,7 @@ func TestCreateWithElement(t *testing.T) {
 }
 
 func TestAddMultipleElements(t *testing.T) {
-	s := CreateSet()
+	s := NewSet()
 
 	if !s.Add(1) {
 		t.Errorf("1 already exists in the set %v", s)
@@ -33,7 +33,7 @@ func TestAddMultipleElements(t *testing.T) {
 }
 
 func TestAddDifferentKindElements(t *testing.T) {
-	s := CreateSet()
+	s := NewSet()
 
 	if !s.Add(1) {
 		t.Errorf("1 already exists in the set %v", s)
@@ -45,7 +45,7 @@ func TestAddDifferentKindElements(t *testing.T) {
 }
 
 func TestAddDifferentKindElementsThanInitial(t *testing.T) {
-	s := Create(1)
+	s := CreateSet(1)
 
 	if !s.Add(2) {
 		t.Errorf("2 already exists in the set %v", s)
@@ -57,7 +57,7 @@ func TestAddDifferentKindElementsThanInitial(t *testing.T) {
 }
 
 func TestAddDuplicate(t *testing.T) {
-	s := CreateSet()
+	s := NewSet()
 
 	if !s.Add(1) {
 		t.Errorf("1 already exists in the set %v", s)
@@ -77,7 +77,7 @@ func TestAddDifferentKindThanInitialCustomType(t *testing.T) {
 		{1, 2},
 	}
 
-	s := Create(points[0])
+	s := CreateSet(points[0])
 
 	for point := range points {
 		s.Add(point)
@@ -93,8 +93,7 @@ func TestAddDifferentKindThanInitialCustomType(t *testing.T) {
 }
 
 func TestExists(t *testing.T) {
-	s := CreateSet()
-	s.Add(1)
+	s := CreateSet(1)
 
 	if !s.Exists(1) {
 		t.Errorf("1 is not in the set %v", s)
@@ -104,15 +103,13 @@ func TestExists(t *testing.T) {
 		t.Errorf("2 is in the set %v", s)
 	}
 
-	s.SetType(1)
-
 	if s.Exists("3") {
 		t.Errorf("\"3\" is in the set %v", s)
 	}
 }
 
 func TestSetType(t *testing.T) {
-	s := CreateSet()
+	s := NewSet()
 
 	s.Add(1)
 	s.Add("2")
@@ -136,7 +133,7 @@ func TestSetType(t *testing.T) {
 }
 
 func TestLength(t *testing.T) {
-	s := CreateSet()
+	s := NewSet()
 
 	if s.Length() != 0 {
 		t.Errorf("The set %v has elements in it?", s)
@@ -151,7 +148,7 @@ func TestLength(t *testing.T) {
 }
 
 func TestEmpty(t *testing.T) {
-	s := CreateSet()
+	s := NewSet()
 
 	if !s.Empty() {
 		t.Errorf("The set %v is not empty", s)

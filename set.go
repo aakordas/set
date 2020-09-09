@@ -44,9 +44,9 @@ type Set struct {
 
 var exists = struct{}{}
 
-// CreateSet allocates memory for a new Set. A Set created this way can have
+// NewSet allocates memory for a new Set. A Set created this way can have
 // elements of varying types.
-func CreateSet() (s Set) {
+func NewSet() (s Set) {
 	s.Set = make(map[interface{}]struct{})
 	s.elementsType = nil
 
@@ -69,10 +69,10 @@ func (s *Set) SetType(elem interface{}) error {
 	return &TypeError{s.elementsType, newType, "Trying to re-set the set's type."}
 }
 
-// Create creates a set and inserts elem in it. Moreover, it sets the type of
+// CreateSet creates a set and inserts elem in it. Moreover, it sets the type of
 // the set to be that of the element. That means that Sets created this way will
 // only accept elements of the same type as the initial element.
-func Create(elem interface{}) (s Set) {
+func CreateSet(elem interface{}) (s Set) {
 	s.Set = make(map[interface{}]struct{})
 	s.elementsType = reflect.ValueOf(elem).Type()
 

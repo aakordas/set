@@ -21,14 +21,14 @@ import "github.com/aakordas/set"
 ```go
 import "github.com/aakordas/set"
 
-s := set.CreateSet()
+s := set.NewSet()
 
 s.Add(1)
 s.Add(2)
 
 if s.Add(2) == false {
 	// The element is not added in the set.
-    fmt.Println("The element already exists in the set)
+	fmt.Println("The element already exists in the set)
 }
 
 s.Add(true) // TOTALLY FINE!!
@@ -37,7 +37,7 @@ s.Add("set") // MORE THAN TOTALLY FINE!!
 // This creates a set with a starting element '1'.
 // Moreover, this sets the type of the set to that of the argument passed, 'int'
 // in this case.
-intSet := set.Create(1)
+intSet := set.CreateSet(1)
 
 intSet.Add(2)
 intSet.Add(2) // Nothing happens, since the element already exists in the set.
@@ -45,7 +45,7 @@ intSet.Add("3") // This does not get added, since the set has type 'int'.
 
 
 // No sets of sets are allowed.
-s1 := set.Create()
+s1 := set.CreateSet()
 s.Add(s1) // PANIC! Set is not hashable.
 ```
 
