@@ -182,3 +182,36 @@ func TestEqual(t *testing.T) {
 		t.Errorf("The set %v is equal to the set %v.", s1, s2)
 	}
 }
+
+func TestSubset(t *testing.T) {
+	s1 := NewSet()
+	s2 := NewSet()
+
+	if !s1.Subset(s2) {
+		t.Errorf("The set %v is not a subset of the set %v.", s1, s2)
+	}
+
+	s1.Add(1)
+
+	if s1.Subset(s2) {
+		t.Errorf("The set %v is a subset of the set %v.", s1, s2)
+	}
+
+	s2.Add(1)
+
+	if !s1.Subset(s2) {
+		t.Errorf("The set %v is not a subset of the set %v.", s1, s2)
+	}
+
+	s2.Add(2)
+
+	if !s1.Subset(s2) {
+		t.Errorf("The set %v is not a subset of the set %v.", s1, s2)
+	}
+
+	s1.Add(3)
+
+	if s1.Subset(s2) {
+		t.Errorf("The set %v is a subset of the set %v.", s1, s2)
+	}
+}

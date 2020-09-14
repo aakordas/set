@@ -151,3 +151,33 @@ func (s1 *Set) Equal(s2 Set) bool {
 
 	return false
 }
+
+// Subset returns true if s1 is a subset of s2. That means that all elements of
+// s1 are also elements of s2.
+func (s1 *Set) Subset(s2 Set) bool {
+	if s1.Empty() && s2.Empty() {
+		return true
+	}
+
+	if s1.Length() > s2.Length() {
+		return false
+	}
+
+	if s1.Equal(s2) {
+		return true
+	}
+
+	// Testing in this order because s2 will always be bigger, otherwise the
+	// length clause above will have caught it.
+	for e1 := range s1.Set {
+		for e2 := range s2.Set {
+			if e1 != e2 {
+				return false
+			}
+
+			break
+		}
+	}
+
+	return true
+}
