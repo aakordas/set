@@ -2,6 +2,8 @@
 # Heavily modified version of:
 # https://about.gitlab.com/blog/2017/11/27/go-tools-and-gitlab-how-to-do-continuous-integration-like-a-boss/
 
+# TODO: Clear go tool's cache in the clean target.
+
 # Edit those lines to fit your project
 PROJECT_NAME := "set"
 PKG := "${HOME}/go/src/github.com/aakordas/${PROJECT_NAME}"

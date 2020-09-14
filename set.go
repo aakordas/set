@@ -136,17 +136,16 @@ func (s *Set) Empty() bool {
 // Equal returns true if the provided sets is equal to the messenger passing
 // set. That means that both sets have the very same elements, in count and
 // type.
-// TODO: Maybe check reflect.DeepEqual() for this?
-func (s *Set) Equal(s2 Set) bool {
-	if s.Empty() && s2.Empty() {
+func (s1 *Set) Equal(s2 Set) bool {
+	if s1.Empty() && s2.Empty() {
 		return true
 	}
 
-	if s.Length() != s2.Length() {
+	if s1.Length() != s2.Length() {
 		return false
 	}
 
-	if reflect.DeepEqual(s.Set, s2.Set) {
+	if reflect.DeepEqual(s1.Set, s2.Set) {
 		return true
 	}
 
