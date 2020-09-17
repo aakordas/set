@@ -1,3 +1,4 @@
+// TODO: Check if the operations are commutative.
 package set
 
 import (
@@ -213,5 +214,27 @@ func TestSubset(t *testing.T) {
 
 	if s1.Subset(s2) {
 		t.Errorf("The set %v is a subset of the set %v.", s1, s2)
+	}
+}
+
+func TestSameType(t *testing.T) {
+	s1 := NewSet()
+	s2 := NewSet()
+
+	if !s1.SameType(s2) || !s2.SameType(s1) {
+		t.Errorf("The set %v does not have the same type as the set %v.", s1, s2)
+	}
+
+	s1.Add(1)
+	s2.Add(2)
+
+	if !s1.SameType(s2) || !s2.SameType(s1) {
+		t.Errorf("The set %v does not have the same type as the set %v.", s1, s2)
+	}
+
+	s3 := CreateSet("a")
+
+	if s1.SameType(s3) || s3.SameType(s1) {
+		t.Errorf("The set %v has the same type as the set %v.", s1, s2)
 	}
 }

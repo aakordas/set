@@ -14,6 +14,8 @@ whatever performance penalties this might have.
 
 This set implementation is not thread-safe.
 */
+
+// TODO: Make add take variadic arguments?
 package set
 
 import (
@@ -88,6 +90,16 @@ func (s *Set) properType(elem interface{}) bool {
 	}
 
 	return false
+}
+
+// SameType checks if the set s1 is of the same type as the set s2. If it is,
+// it returns true.
+func (s1 *Set) SameType(s2 Set) bool {
+	if s1.elementsType != s2.elementsType {
+		return false
+	}
+
+	return true
 }
 
 // Add adds elem to the set s. If the element exists in the set or if the
