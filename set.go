@@ -24,8 +24,8 @@ import (
 )
 
 // TypeError indicates an incongruity between the type the set has and another
-// type the user tries to set. It holds information about both the new and the
-// old type, as well as an error message.
+// type the user tries to set or between two sets. It holds information about
+// both the new and the old type, as well as an error message.
 type TypeError struct {
 	CurrentType reflect.Type // The type the set already has
 	NewType     reflect.Type // The type that caused the error
@@ -192,4 +192,25 @@ func (s1 *Set) Subset(s2 Set) bool {
 	}
 
 	return true
+}
+
+// Union returns the union of the two sets.
+func (s1 *Set) Union(s2 Set) (Set, error) {
+	if !s1.SameType(s2) {
+		return Set{}, &TypeError{s1.elementsType,
+			s2.elementsType,
+			"The sets' types do not match."}
+	}
+
+	s := NewSet()
+
+	for v := range s1.Set {
+		s.Add(v)
+	}
+
+	for v := range s2.Set {
+		s.Add(v)
+	}
+
+	return s, nil
 }

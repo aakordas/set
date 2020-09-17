@@ -238,3 +238,26 @@ func TestSameType(t *testing.T) {
 		t.Errorf("The set %v has the same type as the set %v.", s1, s2)
 	}
 }
+
+func TestUnion(t *testing.T) {
+	s1 := CreateSet(1)
+	s2 := CreateSet(2)
+
+	got, err := s1.Union(s2)
+
+	want := CreateSet(1)
+	want.Add(2)
+
+	if !got.Equal(want) || err != nil {
+		t.Errorf("The union of %v and %v resulted in %v, instead of %v.", s1, s2, got, want)
+	}
+
+	s3 := CreateSet("a")
+
+	got, err = s1.Union(s3)
+	want = Set{}
+
+	if !got.Equal(want) || err == nil {
+		t.Errorf("The union of %v and %v succeeded with %v, instead of %v.", s1, s3, got, want)
+	}
+}
