@@ -16,7 +16,7 @@ func TestCreateAndAdd(t *testing.T) {
 func TestCreateWithElement(t *testing.T) {
 	s := CreateSet(1)
 
-	if !s.Exists(1) {
+	if !s.Has(1) {
 		t.Errorf("1 is not in the set %v", s)
 	}
 }
@@ -93,18 +93,18 @@ func TestAddDifferentKindThanInitialCustomType(t *testing.T) {
 	}
 }
 
-func TestExists(t *testing.T) {
+func TestHas(t *testing.T) {
 	s := CreateSet(1)
 
-	if !s.Exists(1) {
+	if !s.Has(1) {
 		t.Errorf("1 is not in the set %v", s)
 	}
 
-	if s.Exists(2) {
+	if s.Has(2) {
 		t.Errorf("2 is in the set %v", s)
 	}
 
-	if s.Exists("3") {
+	if s.Has("3") {
 		t.Errorf("\"3\" is in the set %v", s)
 	}
 }

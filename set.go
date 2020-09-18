@@ -120,8 +120,8 @@ func (s *Set) Add(elem interface{}) bool {
 	return false
 }
 
-// Exists returns true if the element provided already exists in the set, otherwise false.
-func (s *Set) Exists(elem interface{}) bool {
+// Has returns true if the element provided already exists in the set, otherwise false.
+func (s *Set) Has(elem interface{}) bool {
 	if !s.properType(elem) {
 		return false
 	}
