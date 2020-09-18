@@ -197,8 +197,7 @@ func (s1 *Set) Subset(s2 Set) bool {
 // Union returns the union of the two sets.
 func (s1 *Set) Union(s2 Set) (Set, error) {
 	if !s1.SameType(s2) {
-		return Set{}, &TypeError{s1.elementsType,
-			s2.elementsType,
+		return Set{}, &TypeError{s1.elementsType, s2.elementsType,
 			"The sets' types do not match."}
 	}
 
@@ -210,6 +209,26 @@ func (s1 *Set) Union(s2 Set) (Set, error) {
 
 	for v := range s2.Set {
 		s.Add(v)
+	}
+
+	return s, nil
+}
+
+// Intersection returns the intersection of the two sets.
+func (s1 *Set) Intersection(s2 Set) (Set, error) {
+	if !s1.SameType(s2) {
+		return Set{}, &TypeError{s1.elementsType, s2.elementsType,
+			"The sets' types do not match."}
+	}
+
+	s := NewSet()
+
+	for v1 := range s1.Set {
+		for v2 := range s2.Set {
+			if v1 == v2 {
+				s.Add(v1)
+			}
+		}
 	}
 
 	return s, nil

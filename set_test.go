@@ -261,3 +261,43 @@ func TestUnion(t *testing.T) {
 		t.Errorf("The union of %v and %v succeeded with %v, instead of %v.", s1, s3, got, want)
 	}
 }
+
+func TestIntersection(t *testing.T) {
+	s1 := CreateSet(1)
+	s2 := CreateSet(1)
+
+	got, err := s1.Intersection(s2)
+	want := CreateSet(1)
+
+	if !got.Equal(want) || err != nil {
+		t.Errorf("The intersection of %v and %v resulted in %v, instead of %v.", s1, s2, got, want)
+	}
+
+	s3 := CreateSet(2)
+
+	got, err = s1.Intersection(s3)
+	want = NewSet()
+
+	if !got.Equal(want) || err != nil {
+		t.Errorf("The intersection of %v and %v resulted in %v, instead of %v.", s1, s3, got, want)
+	}
+
+	s1.Add(2)
+	s3.Add(3)
+
+	got, err = s1.Intersection(s3)
+	want = CreateSet(2)
+
+	if !got.Equal(want) || err != nil {
+		t.Errorf("The interesection of %v and %v resulted in %v, instead of %v.", s1, s3, got, want)
+	}
+
+	s4 := CreateSet("a")
+
+	got, err = s1.Intersection(s4)
+	want = NewSet()
+
+	if !got.Equal(want) || err == nil {
+		t.Errorf("The intersection of %v and %v succeeded with %v, instead of %v.", s1, s3, got, want)
+	}
+}
