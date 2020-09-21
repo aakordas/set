@@ -1,8 +1,10 @@
 # set
-A simple set implementation in Go. It can accept any type of element to
-store. It can even accept different types of elements in the same set (check
-Examples). It does not allow duplicates. It is implemented with Go's maps and
-reflect package, with whatever performance implications this comes with.
+A simple set implementation in Go. It aims to be mathematically correct,
+following all the relevant properties of set operations. It can accept any type
+of element to store. It can even accept different types of elements in the same
+set (check Examples). It does not allow duplicates. It is implemented with Go's
+maps and reflect package, with whatever performance implications this comes
+with.
 
 ## Installation
 To install, type
@@ -43,6 +45,10 @@ intSet.Add(2)
 intSet.Add(2) // Nothing happens, since the element already exists in the set.
 intSet.Add("3") // This does not get added, since the set has type 'int'.
 
+intSet.Add(3)
+s.Add(4)
+union := s.Union(intSet) // This will result in the set {1, 2, 3, 4}
+intersection := s.Intersection(intSet) // This will result in the set {1, 2}
 
 // No sets of sets are allowed.
 s1 := set.CreateSet()
