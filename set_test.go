@@ -1,4 +1,3 @@
-// TODO: Check if the operations are commutative.
 package set
 
 import (
@@ -169,11 +168,17 @@ func TestEqual(t *testing.T) {
 	if !s1.Equal(s2) {
 		t.Errorf("The set %v is not equal to the set %v.", s1, s2)
 	}
+	if !s2.Equal(s1) {
+		t.Errorf("The set %v is not equal to the set %v.", s2, s1)
+	}
 
 	s2.Add(2)
 
 	if s1.Equal(s2) {
 		t.Errorf("The set %v is equal to the set %v.", s1, s2)
+	}
+	if s2.Equal(s1) {
+		t.Errorf("The set %v is equal to the set %v.", s2, s1)
 	}
 
 	s1.Add(2)
@@ -191,17 +196,26 @@ func TestSubset(t *testing.T) {
 	if !s1.Subset(s2) {
 		t.Errorf("The set %v is not a subset of the set %v.", s1, s2)
 	}
+	if !s2.Subset(s1) {
+		t.Errorf("The set %v is not a subset of the set %v.", s2, s1)
+	}
 
 	s1.Add(1)
 
 	if s1.Subset(s2) {
 		t.Errorf("The set %v is a subset of the set %v.", s1, s2)
 	}
+	if !s2.Subset(s1) {
+		t.Errorf("The set %v is not a subset of the set %v.", s2, s1)
+	}
 
 	s2.Add(1)
 
 	if !s1.Subset(s2) {
 		t.Errorf("The set %v is not a subset of the set %v.", s1, s2)
+	}
+	if !s2.Subset(s1) {
+		t.Errorf("The set %v is not a subset of the set %v.", s2, s1)
 	}
 
 	s2.Add(2)
@@ -214,6 +228,9 @@ func TestSubset(t *testing.T) {
 
 	if s1.Subset(s2) {
 		t.Errorf("The set %v is a subset of the set %v.", s1, s2)
+	}
+	if s2.Subset(s1) {
+		t.Errorf("The set %v is a subset of the set %v.", s2, s1)
 	}
 }
 
@@ -243,18 +260,22 @@ func TestUnion(t *testing.T) {
 	s1 := CreateSet(1)
 	s2 := CreateSet(2)
 
-	got, err := s1.Union(s2)
+	got1, err := s1.Union(s2)
+	got2, err := s2.Union(s1)
 
 	want := CreateSet(1)
 	want.Add(2)
 
-	if !got.Equal(want) || err != nil {
-		t.Errorf("The union of %v and %v resulted in %v, instead of %v.", s1, s2, got, want)
+	if !got1.Equal(want) || err != nil {
+		t.Errorf("The union of %v and %v resulted in %v, instead of %v.", s1, s2, got1, want)
+	}
+	if !got1.Equal(got2) {
+		t.Errorf("Union is not commutative!")
 	}
 
 	s3 := CreateSet("a")
 
-	got, err = s1.Union(s3)
+	got, err := s1.Union(s3)
 	want = Set{}
 
 	if !got.Equal(want) || err == nil {
@@ -266,35 +287,47 @@ func TestIntersection(t *testing.T) {
 	s1 := CreateSet(1)
 	s2 := CreateSet(1)
 
-	got, err := s1.Intersection(s2)
+	got1, err := s1.Intersection(s2)
+	got2, err := s2.Intersection(s1)
 	want := CreateSet(1)
 
-	if !got.Equal(want) || err != nil {
-		t.Errorf("The intersection of %v and %v resulted in %v, instead of %v.", s1, s2, got, want)
+	if !got1.Equal(want) || err != nil {
+		t.Errorf("The intersection of %v and %v resulted in %v, instead of %v.", s1, s2, got1, want)
+	}
+	if !got1.Equal(got2) {
+		t.Errorf("Intersection is not commutative!")
 	}
 
 	s3 := CreateSet(2)
 
-	got, err = s1.Intersection(s3)
+	got1, err = s1.Intersection(s3)
+	got2, err = s3.Intersection(s1)
 	want = NewSet()
 
-	if !got.Equal(want) || err != nil {
-		t.Errorf("The intersection of %v and %v resulted in %v, instead of %v.", s1, s3, got, want)
+	if !got1.Equal(want) || err != nil {
+		t.Errorf("The intersection of %v and %v resulted in %v, instead of %v.", s1, s3, got1, want)
+	}
+	if !got1.Equal(got2) {
+		t.Errorf("Intersection is not commutative!")
 	}
 
 	s1.Add(2)
 	s3.Add(3)
 
-	got, err = s1.Intersection(s3)
+	got1, err = s1.Intersection(s3)
+	got2, err = s3.Intersection(s1)
 	want = CreateSet(2)
 
-	if !got.Equal(want) || err != nil {
-		t.Errorf("The interesection of %v and %v resulted in %v, instead of %v.", s1, s3, got, want)
+	if !got1.Equal(want) || err != nil {
+		t.Errorf("The interesection of %v and %v resulted in %v, instead of %v.", s1, s3, got1, want)
+	}
+	if !got1.Equal(got2) {
+		t.Errorf("Intersection is not commutative!")
 	}
 
 	s4 := CreateSet("a")
 
-	got, err = s1.Intersection(s4)
+	got, err := s1.Intersection(s4)
 	want = NewSet()
 
 	if !got.Equal(want) || err == nil {
