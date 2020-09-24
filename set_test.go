@@ -334,3 +334,66 @@ func TestIntersection(t *testing.T) {
 		t.Errorf("The intersection of %v and %v succeeded with %v, instead of %v.", s1, s3, got, want)
 	}
 }
+
+func TestUnionSubsetProperties(t *testing.T) {
+	s1 := CreateSet(1)
+	s2 := CreateSet(2)
+
+	union, err := s1.Union(s2)
+	if err != nil {
+		t.Errorf("There was an error trying to make the union of %v and %v.\n%v", s1, s2, err)
+	}
+
+	// s1 ⊆ s1 ∪ s2
+	if !s1.Subset(union) {
+		t.Errorf("The set %v is not a subset of the set %v.", s1, union)
+	}
+	// s2 ⊆ s1 ∪ s2
+	if !s2.Subset(union) {
+		t.Errorf("The set %v is not a subset of the set %v.", s2, union)
+	}
+
+	s3 := CreateSet(1)
+	s3.Add(2)
+
+	// if s1 ⊆ s3 and s2 ⊆ s3 then s1 ∪ s2 ⊆ s3
+	if !union.Subset(s3) {
+		t.Errorf("The set %v is not a subset of the set %v.", union, s3)
+	}
+
+}
+
+func TestIntersectionSubsetProperties(t *testing.T) {
+	s1 := CreateSet(1)
+	s1.Add(2)
+	s2 := CreateSet(1)
+	s2.Add(3)
+
+	intersection, err := s1.Intersection(s2)
+	if err != nil {
+		t.Errorf("There was an error trying to make the intersection of %v and %v.\n%v", s1, s2, err)
+	}
+
+	// s1 ∩ s2 ⊆ s1
+	if !intersection.Subset(s1) {
+		t.Errorf("The set %v is not a subset of the set %v.", intersection, s1)
+	}
+	// s1 ∩ s2 ⊆ s2
+	if !intersection.Subset(s2) {
+		t.Errorf("The set %v is not a subset of the set %v.", intersection, s2)
+	}
+
+	// if s3 ⊆ s1 and s3 ⊆ s2 then s3 ⊆ s1 ∩ s2
+	s3 := CreateSet(1)
+
+	if !s3.Subset(s1) {
+		t.Errorf("The set %v is not a subset of the set %v.", s3, s1)
+	}
+	if !s3.Subset(s2) {
+		t.Errorf("The set %v is not a subset of the set %v.", s3, s2)
+	}
+
+	if !s3.Subset(intersection) {
+		t.Errorf("The set %v is not a subset of the set %v.", s3, intersection)
+	}
+}
