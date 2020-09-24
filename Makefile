@@ -84,6 +84,8 @@ build: dep	# Build the binary file
 
 clean:	# Remove previous build
 	@rm -vf ${PROJECT_NAME}
+	@go clean -cache
+	@go clean -testcache
 
 help:	# Display a list of all the targets
 	@grep -h -E '^[a-z_-]+[: ]' ${MAKEFILE_LIST} | awk 'BEGIN {FS = ":.*?"}; {printf "\033[36m%-30s\033[0m\n", $$1}'
