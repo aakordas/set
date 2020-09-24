@@ -45,8 +45,14 @@ format-all fmt-all:	# Format all the files, code and tests
 test-short unit-short:	# Run the short suite of unittests
 	@go test -v -short -failfast ${PKG_LIST}
 
+test-short-quiet unit-short-quiet:  # Run the short suite of unittests.
+	@go test -short -failfast ${PKG_LIST}
+
 test unit:	# Run the normal suite of unitests
 	@go test -v -failfast ${PKG_LIST}
+
+test-quiet unit-quiet:	# Run the normal suite of unittests, but not verbose.
+	@go test -failfast ${PKG_LIST}
 
 test-debug unit-debug:	# Produce the test binary separately for debugging
 	@go test -c -gcflags='all=-N -l' -o "${PROJECT_NAME}.test.out"
