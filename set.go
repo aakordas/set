@@ -167,7 +167,11 @@ func (s1 *Set) Equal(s2 Set) bool {
 // Subset returns true if s1 is a subset of s2. That means that all elements of
 // s1 are also elements of s2.
 func (s1 *Set) Subset(s2 Set) bool {
-	if s1.Empty() && s2.Empty() {
+	if s1.Equal(s2) {
+		return true
+	}
+
+	if s1.Empty() {
 		return true
 	}
 
@@ -175,19 +179,25 @@ func (s1 *Set) Subset(s2 Set) bool {
 		return false
 	}
 
-	if s1.Equal(s2) {
-		return true
-	}
-
+	s := make([]bool, len(s1.Set), len(s1.Set))
+	i := 0
 	// Testing in this order because s2 will always be bigger, otherwise the
 	// length clause above will have caught it.
 	for e1 := range s1.Set {
 		for e2 := range s2.Set {
-			if e1 != e2 {
-				return false
+			if e1 == e2 {
+				s[i] = true
 			}
+		}
+		i++
+	}
 
-			break
+	for c := range s {
+		// If some element of s is false, that means an element of s1
+		// was not found in s2, so s1 is not a subset of s2. false is an
+		// 'untyped boolean', hence the need to use 0.
+		if c != 0 {
+			return false
 		}
 	}
 
