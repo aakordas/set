@@ -43,10 +43,10 @@ format-all fmt-all:	# Format all the files, code and tests
 	@${FORMAT} ${TEST_FILES}
 
 test-short unit-short:	# Run the short suite of unittests
-	@go test -v -short ${PKG_LIST}
+	@go test -v -short -failfast ${PKG_LIST}
 
 test unit:	# Run the normal suite of unitests
-	@go test -v ${PKG_LIST}
+	@go test -v -failfast ${PKG_LIST}
 
 race-short: dep	# Run the data race detector on the short suite of tests
 	@go test -v -race -short ${PKG_LIST}
