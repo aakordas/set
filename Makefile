@@ -48,6 +48,9 @@ test-short unit-short:	# Run the short suite of unittests
 test unit:	# Run the normal suite of unitests
 	@go test -v -failfast ${PKG_LIST}
 
+test-debug unit-debug:	# Produce the test binary separately for debugging
+	@go test -c -gcflags='all=-N -l' -o "${PROJECT_NAME}.test.out"
+
 race-short: dep	# Run the data race detector on the short suite of tests
 	@go test -v -race -short ${PKG_LIST}
 
@@ -84,6 +87,7 @@ build: dep	# Build the binary file
 
 clean:	# Remove previous build
 	@rm -vf ${PROJECT_NAME}
+	@rm -vf "${PROJECT_NAME}.test.out"
 	@go clean -cache
 	@go clean -testcache
 
