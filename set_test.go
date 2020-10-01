@@ -397,3 +397,27 @@ func TestIntersectionSubsetProperties(t *testing.T) {
 		t.Errorf("The set %v is not a subset of the set %v.", s3, intersection)
 	}
 }
+
+func TestDifference(t *testing.T) {
+	s1 := CreateSet(1)
+	s1.Add(2)
+	s2 := CreateSet(2)
+
+	got, err := s1.Difference(s2)
+	if err != nil {
+		t.Errorf("There was an error trying to make the difference of %v and %v.", s1, s2)
+	}
+
+	want := CreateSet(1)
+
+	if !got.Equal(want) {
+		t.Errorf("The difference of set %v from set %v is %v instead of %v.", s2, s1, got, want)
+	}
+
+	got, err = s2.Difference(s1)
+	want = NewSet()
+
+	if !got.Equal(want) {
+		t.Errorf("The difference of set %v from set %v is %v instead of %v.", s1, s2, got, want)
+	}
+}

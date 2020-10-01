@@ -243,3 +243,22 @@ func (s1 *Set) Intersection(s2 Set) (Set, error) {
 
 	return s, nil
 }
+
+// Difference returns a set that is the difference (also termed as relative
+// complement) of s1 from s2. The resulting set is the s1\s2.
+func (s1 *Set) Difference(s2 Set) (Set, error) {
+	if !s1.SameType(s2) {
+		return Set{}, &TypeError{s1.elementsType, s2.elementsType,
+			"The sets' type do not match."}
+	}
+
+	s := NewSet()
+
+	for v1 := range s1.Set {
+		if !s2.Has(v1) {
+			s.Add(v1)
+		}
+	}
+
+	return s, nil
+}
