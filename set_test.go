@@ -361,6 +361,14 @@ func TestUnionSubsetProperties(t *testing.T) {
 		t.Errorf("The set %v is not a subset of the set %v.", union, s3)
 	}
 
+	union, err = s1.Union(s1)
+	if err != nil {
+		t.Errorf("There was an error trying to make the union of %v with itself.\n%v", s1, err)
+	}
+
+	if !union.Equal(s1) {
+		t.Errorf("The set %v is not the same as the set %v.", union, s1)
+	}
 }
 
 func TestIntersectionSubsetProperties(t *testing.T) {
