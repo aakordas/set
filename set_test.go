@@ -430,6 +430,21 @@ func TestIntersectionSubsetProperties(t *testing.T) {
 	if !intersection.Equal(s1) {
 		t.Errorf("The set %v is not the same as the set %v.", intersection, s1)
 	}
+
+	// s1 ∩ s2 = s2 ∩ s1
+	intersection1, err1 := s1.Intersection(s2)
+	if err1 != nil {
+		t.Errorf("There was an error trying to make the intersection of %v with %v.", s1, s2)
+	}
+
+	intersection2, err2 := s2.Intersection(s1)
+	if err2 != nil {
+		t.Errorf("There was an error trying to make the intersection of %v with %v.", s2, s1)
+	}
+
+	if !intersection1.Equal(intersection2) {
+		t.Errorf("The set %v is not equal to %v, that means the intersection is not commutative.", intersection1, intersection2)
+	}
 }
 
 func TestDifference(t *testing.T) {
