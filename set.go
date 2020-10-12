@@ -212,6 +212,7 @@ func (s1 *Set) Union(s2 Set) (Set, error) {
 	}
 
 	s := NewSet()
+	s.elementsType = s1.elementsType
 
 	for v := range s1.Set {
 		s.Add(v)
