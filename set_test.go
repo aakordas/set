@@ -386,8 +386,8 @@ func TestUnionSubsetProperties(t *testing.T) {
 		t.Errorf("The set %v is not equal to %v, that means the union is not commutative.", union1, union2)
 	}
 
-	s3 = CreateSet(3)
 	// (s1 ∪ s2) ∪ s3 = s1 ∪ (s2 ∪ s3)
+	s3 = CreateSet(3)
 	union1, err = s1.Union(s2)
 	if err != nil {
 		t.Errorf("There was an error trying to make the union of %v with %v.", s1, s2)
@@ -470,6 +470,33 @@ func TestIntersectionSubsetProperties(t *testing.T) {
 
 	if !intersection1.Equal(intersection2) {
 		t.Errorf("The set %v is not equal to %v, that means the intersection is not commutative.", intersection1, intersection2)
+	}
+
+	// (s1 ∩ s2) ∩ s3 = s1 ∩ (s2 ∩ s3)
+	s3 = CreateSet(1)
+	s3.Add(4)
+	intersection1, err = s1.Intersection(s2)
+	if err != nil {
+		t.Errorf("There was an error trying to make the intersection of %v with %v.", s1, s2)
+	}
+
+	got1, err := intersection1.Intersection(s3)
+	if err != nil {
+		t.Errorf("There was an error trying to make the intersection of %v with %v.", intersection1, s3)
+	}
+
+	intersection2, err = s2.Intersection(s3)
+	if err != nil {
+		t.Errorf("There was an error trying to make the intersection of %v with %v.", s2, s3)
+	}
+
+	got2, err := s1.Intersection(intersection2)
+	if err != nil {
+		t.Errorf("There was an error trying to make the interesection of %v with %v.", s1, intersection2)
+	}
+
+	if !got1.Equal(got2) {
+		t.Errorf("The set %v is not equal to the set %v. This means intersection is not associative.", got1, got2)
 	}
 }
 
