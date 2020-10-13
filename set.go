@@ -233,6 +233,7 @@ func (s1 *Set) Intersection(s2 Set) (Set, error) {
 	}
 
 	s := NewSet()
+	s.elementsType = s1.elementsType
 
 	for v1 := range s1.Set {
 		for v2 := range s2.Set {
