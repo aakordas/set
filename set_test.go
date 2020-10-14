@@ -500,6 +500,44 @@ func TestIntersectionSubsetProperties(t *testing.T) {
 	}
 }
 
+func TestSetProperties(t *testing.T) {
+	// s1 ∩ (s2 ∪ s3) = (s1 ∩ s2) ∪ (s1 ∩ s3)
+	s1 := CreateSet(1)
+	s1.Add(2)
+	s1.Add(3)
+	s2 := CreateSet(2)
+	s3 := CreateSet(3)
+
+	union, err := s2.Union(s3)
+	if err != nil {
+		t.Errorf("There was an error trying to make the union of %v and %v.", s2, s3)
+	}
+
+	got1, err := s1.Intersection(union)
+	if err != nil {
+		t.Errorf("There was an error trying to make the intersection of %v and %v.", s1, union)
+	}
+
+	intersection1, err := s1.Intersection(s2)
+	if err != nil {
+		t.Errorf("There was an error trying to make the intersection of %v and %v.", s1, s2)
+	}
+
+	intersection2, err := s1.Intersection(s3)
+	if err != nil {
+		t.Errorf("There was an error trying to make the intersection of %v and %v.", s1, s3)
+	}
+
+	got2, err := intersection1.Union(intersection2)
+	if err != nil {
+		t.Errorf("There was an error trying to make the union of %v and %v.", intersection1, intersection2)
+	}
+
+	if !got1.Equal(got2) {
+		t.Errorf("The set %v is not equal to the set %v. This means the operations are not distributive.", got1, got2)
+	}
+}
+
 func TestDifference(t *testing.T) {
 	s1 := CreateSet(1)
 	s1.Add(2)
