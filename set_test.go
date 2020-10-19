@@ -566,6 +566,21 @@ func TestSetProperties(t *testing.T) {
 	if !got1.Equal(got2) {
 		t.Errorf("The set %v is not equal to the set %v. This means the operations are not distributive.", got1, got2)
 	}
+
+	// s1 ∩ (s1 ∪ s2) = s1
+	union, err = s1.Union(s2)
+	if err != nil {
+		t.Errorf("There was an error trying to make the union of %v and %v.", s1, s2)
+	}
+
+	got, err := s1.Intersection(union)
+	if err != nil {
+		t.Errorf("There was an error trying to make the intersection of %v and %v.", s1, union)
+	}
+
+	if !got.Equal(s1) {
+		t.Errorf("The set %v is not equal to the set %v. This means the operations are not absorptive.", got, s1)
+	}
 }
 
 func TestDifference(t *testing.T) {
