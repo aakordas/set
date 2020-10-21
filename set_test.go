@@ -258,14 +258,35 @@ func TestSameType(t *testing.T) {
 
 func TestUnion(t *testing.T) {
 	s1 := CreateSet(1)
-	s2 := CreateSet(2)
+	s2 := NewSet()
 
-	got1, err := s1.Union(s2)
-	got2, err := s2.Union(s1)
+	// s1 ∪ Ø = s1
+	got, err := s1.Union(s2)
+	if err != nil {
+		t.Errorf("There was an error trying to make the union of %v and %v.\n%v", s1, s2, err)
+	}
 
 	want := CreateSet(1)
+
+	if !got.Equal(want) {
+		t.Errorf("The set %v is not equal to the set %v.", got, want);
+	}
+
+	s2.Add(2)
+	s2.SetType(2)
+	got1, err := s1.Union(s2)
+	if err != nil {
+		t.Errorf("There was an error trying to make the union of %v and %v.\n%v", s1, s2, err)
+	}
+	got2, err := s2.Union(s1)
+	if err != nil {
+		t.Errorf("There was an error trying to make the union of %v and %v.\n%v", s2, s1, err)
+	}
+
+	want = CreateSet(1)
 	want.Add(2)
 
+	// s1 ∪ s2 = s2 ∪ s1
 	if !got1.Equal(want) || err != nil {
 		t.Errorf("The union of %v and %v resulted in %v, instead of %v.", s1, s2, got1, want)
 	}
@@ -275,7 +296,7 @@ func TestUnion(t *testing.T) {
 
 	s3 := CreateSet("a")
 
-	got, err := s1.Union(s3)
+	got, err = s1.Union(s3)
 	want = Set{}
 
 	if !got.Equal(want) || err == nil {

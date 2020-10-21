@@ -206,9 +206,14 @@ func (s1 *Set) Subset(s2 Set) bool {
 
 // Union returns the union of the two sets.
 func (s1 *Set) Union(s2 Set) (Set, error) {
-	if !s1.SameType(s2) {
-		return Set{}, &TypeError{s1.elementsType, s2.elementsType,
+	// An empty set will have nil elementsType which will trigger this
+	// clause. But it's a valid operation to make the union of a set with
+	// the empty set.
+	if !s1.Empty() && !s2.Empty() {
+		if !s1.SameType(s2) {
+			return Set{}, &TypeError{s1.elementsType, s2.elementsType,
 			"The sets' types do not match."}
+		}
 	}
 
 	s := NewSet()
