@@ -308,6 +308,7 @@ func TestIntersection(t *testing.T) {
 	s1 := CreateSet(1)
 	s2 := CreateSet(1)
 
+	// s1 ∩ s2 = s2 ∩ s1
 	got1, err := s1.Intersection(s2)
 	got2, err := s2.Intersection(s1)
 	want := CreateSet(1)
@@ -353,6 +354,16 @@ func TestIntersection(t *testing.T) {
 
 	if !got.Equal(want) || err == nil {
 		t.Errorf("The intersection of %v and %v succeeded with %v, instead of %v.", s1, s3, got, want)
+	}
+
+	// s2 ∩ s1 = s2, where s2 is a subset of s1
+	got, err = s2.Intersection(s1)
+	if err != nil {
+		t.Errorf("There was an error trying to make the intersection of %v and %v.\n%v", s2, s1, err)
+	}
+
+	if !got.Equal(s2) {
+		t.Errorf("The interesction of %v and %v resulted in %v, instead of %v.", s2, s1, got, want)
 	}
 }
 
