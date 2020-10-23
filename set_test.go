@@ -272,6 +272,7 @@ func TestUnion(t *testing.T) {
 		t.Errorf("The set %v is not equal to the set %v.", got, want);
 	}
 
+	// s1 ∪ s2 = s2 ∪ s1
 	s2.Add(2)
 	s2.SetType(2)
 	got1, err := s1.Union(s2)
@@ -286,12 +287,21 @@ func TestUnion(t *testing.T) {
 	want = CreateSet(1)
 	want.Add(2)
 
-	// s1 ∪ s2 = s2 ∪ s1
 	if !got1.Equal(want) || err != nil {
 		t.Errorf("The union of %v and %v resulted in %v, instead of %v.", s1, s2, got1, want)
 	}
 	if !got1.Equal(got2) {
 		t.Errorf("Union is not commutative!")
+	}
+
+	// s1 ∪ s2 = s2, where s1 ⊆ s2
+	got, err = s1.Union(want)
+	if err != nil {
+		t.Errorf("There was an error trying to make the union of %v and %v.\n%v", s1, want, err)
+	}
+
+	if !got.Equal(want) {
+		t.Errorf("The union of %v and %v resulted in %v, instead of %v.", s1, want, got, want)
 	}
 
 	s3 := CreateSet("a")
@@ -356,14 +366,14 @@ func TestIntersection(t *testing.T) {
 		t.Errorf("The intersection of %v and %v succeeded with %v, instead of %v.", s1, s3, got, want)
 	}
 
-	// s2 ∩ s1 = s2, where s2 is a subset of s1
+	// s2 ∩ s1 = s2, where s2 ⊆ s1
 	got, err = s2.Intersection(s1)
 	if err != nil {
 		t.Errorf("There was an error trying to make the intersection of %v and %v.\n%v", s2, s1, err)
 	}
 
 	if !got.Equal(s2) {
-		t.Errorf("The interesction of %v and %v resulted in %v, instead of %v.", s2, s1, got, want)
+		t.Errorf("The interesection of %v and %v resulted in %v, instead of %v.", s2, s1, got, want)
 	}
 }
 
