@@ -375,6 +375,17 @@ func TestIntersection(t *testing.T) {
 	if !got.Equal(s2) {
 		t.Errorf("The interesection of %v and %v resulted in %v, instead of %v.", s2, s1, got, want)
 	}
+
+        // s1 ∩ ∅ = ∅
+        empty := NewSet()
+        intersection, err := s1.Intersection(empty)
+        if err != nil {
+                t.Errorf("There was an error trying to make the intersection of %v and %v.\n%ev", s1, empty, err)
+        }
+
+        if !intersection.Equal(empty) {
+                t.Errorf("The intersection of %v and %v resulted in %v, instead of %v.", s1, empty, intersection, empty)
+        }
 }
 
 func TestUnionSubsetProperties(t *testing.T) {
